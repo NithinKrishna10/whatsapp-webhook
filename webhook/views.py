@@ -7,12 +7,12 @@ VERIFY_TOKEN = "your_verify_token"
 @csrf_exempt
 def whatsapp_webhook(request):
     if request.method == "GET":
-        mode = request.GET.get("hub.mode")
-        token = request.GET.get("hub.verify_token")
-        challenge = request.GET.get("hub.challenge")
+        mode = request.GET.get("hub_mode")
+        token = request.GET.get("hub_verify_token")
+        challenge = request.GET.get("hub_challenge")
 
         if mode == "subscribe" and token == VERIFY_TOKEN:
-            return challenge
+            return JsonResponse({"challenge": challenge})
         else:
             return JsonResponse({"error": "Invalid verification token"}, status=403)
 
