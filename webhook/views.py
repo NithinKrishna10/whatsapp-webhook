@@ -12,7 +12,7 @@ def whatsapp_webhook(request):
         challenge = request.GET.get("hub.challenge")
 
         if mode == "subscribe" and token == VERIFY_TOKEN:
-            return JsonResponse({"hub.challenge": challenge}, safe=False)
+            return challenge
         else:
             return JsonResponse({"error": "Invalid verification token"}, status=403)
 
