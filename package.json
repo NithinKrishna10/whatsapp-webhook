@@ -1,0 +1,6 @@
+{
+    "scripts": {
+      "start": "gunicorn whatsapp_webhook.wsgi:application --bind 0.0.0.0:8000"
+    }
+  }
+  
