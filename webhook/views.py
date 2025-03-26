@@ -22,3 +22,17 @@ def whatsapp_webhook(request):
         return JsonResponse({"status": "received"}, status=200)
 
     return JsonResponse({"error": "Invalid request"}, status=400)
+
+
+
+def api_root(request):
+    data = {
+        'message': 'Welcome to the WhatsApp Webhook API',
+        'endpoints': [
+            {
+                'url': 'webhook/',
+                'description': 'WhatsApp incoming message webhook',
+            },
+        ],
+    }
+    return JsonResponse(data)
