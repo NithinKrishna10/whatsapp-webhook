@@ -47,13 +47,11 @@ def google_sheets_webhook(request):
     if request.method == "POST":
         try:
             data = json.loads(request.body)  # Parse JSON payload
-            updated_value = data.get("updated_value")  # Get the updated value
+            
 
-            if updated_value is not None:
-                logger.info(f"Received updated value: {updated_value}")
-                return JsonResponse({"status": "success", "message": "Data received"}, status=200)
-            else:
-                return JsonResponse({"status": "error", "message": "Missing updated_value"}, status=400)
+            logger.info(f"Received updated value: {data}")
+
+            return JsonResponse({"status": "success", "message": "Data received"}, status=200)
 
         except json.JSONDecodeError:
             return JsonResponse({"status": "error", "message": "Invalid JSON"}, status=400)
