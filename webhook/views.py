@@ -3,6 +3,9 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
 from django.http import HttpResponse
+import logging
+# Set up logging
+logger = logging.getLogger(__name__)
 
 VERIFY_TOKEN = "your_verify_token"
 
@@ -37,3 +40,22 @@ def api_root(request):
         ],
     }
     return JsonResponse(data)
+
+
+@csrf_exempt  # Allows webhook to send POST requests without CSRF token
+def google_sheets_webhook(request):
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)  # Parse JSON payload
+            updated_value = data.get("updated_value")  # Get the updated value
+
+            if updated_value is not None:
+                logger.info(f"Received updated value: {updated_value}")
+                return JsonResponse({"status": "success", "message": "Data received"}, status=200)
+            else:
+                return JsonResponse({"status": "error", "message": "Missing updated_value"}, status=400)
+
+        except json.JSONDecodeError:
+            return JsonResponse({"status": "error", "message": "Invalid JSON"}, status=400)
+    
+    return JsonResponse({"status": "error", "message": "Invalid request method"}, status=405)
